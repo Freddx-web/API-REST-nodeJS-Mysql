@@ -1,7 +1,8 @@
 import express from "express";
 import morgan from "morgan";
+
 // Routes
-import languageRoutes from "./routes/language.routes";
+import appRouter from "./routes/UsersRoutes.js";
 
 const app = express();
 
@@ -13,6 +14,9 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 // Routes
-app.use("/api/languages", languageRoutes);
+app.use("/api/app", appRouter);
 
+// Export App 
 export default app;
+
+
