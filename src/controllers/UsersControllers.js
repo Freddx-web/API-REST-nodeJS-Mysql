@@ -35,14 +35,13 @@ const getUserId = async (req, res, next) => {
 };
 
 // Post 
-const addUsers = async (req, res, next) => {
+const addUsers = async (req, res) => {
   try {
     const { nombre, email, password } = req.body;
     if (nombre === undefined || email === undefined || password === undefined) {
-        res.status(400).json({ message: "Bad Request. Please fill all field." });
+      res.status(400).json({ message: "Bad Request. Please fill all field." });
     } 
     else {
-
       const usuarios = { nombre, email, password, date_time };
       const connection = await getConnection();
       await connection.query("INSERT INTO usuarios SET ?", usuarios);
@@ -54,23 +53,20 @@ const addUsers = async (req, res, next) => {
   }
 };
 
-// PUT - Update 
-
+// PUT
 const updateUser = async (req, res, next) => {
   try {
-
     const { id } = req.params;
     const { nombre, email, password } = req.body;
 
-    if (nombre === undefined || email === undefined || password === undefined) {
-        res.status(400).json({ message: "Bad Request. Please fill all field." });
-    } 
+    if (id === undefined || nombre === undefined || email === undefined || password === undefined) {
+      res.status(400).json({ message: "Bad Request. Please fill all field." });
+    }
     else {
-
-      const usuarios = { nombre, email, password, date_time };
+      const usuarios = { nombre, email, password };
       const connection = await getConnection();
-      await connection.query("UPDATE usuarios SET ? WHERE id = ?",[usuarios, id]);
-      res.json({ message: "usuarios Update",result });
+      const result = await connection.query("UPDATE usuarios SET ? WHERE id = ?", [usuarios, id]);
+      res.json(result);
     }
   } catch (error) {
     res.status(500);
@@ -78,15 +74,24 @@ const updateUser = async (req, res, next) => {
   }
 };
 
+// DELETE
+const  deleteUser = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const connection = await getConnection();
+        const result = await connection.query("DELETE FROM usuarios WHERE id = ?", id);
+        res.json(result);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
 
 // Export
-export const methods = { getUsers, getUserId, addUsers, updateUser }
-
-
-
-
-
-
-
-
-
+export const methods = { 
+  getUsers, 
+  getUserId, 
+  addUsers, 
+  deleteUser,
+  updateUser
+}
