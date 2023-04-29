@@ -7,7 +7,7 @@
 // Import Connect
 import { getConnection } from "../database/dbMySql.js"
 import { date_time } from "./TimeControllers.js"
-import { cipher, update } from "../bcryptjs/encryption.js"
+//import { cipher, update } from "../bcryptjs/encryption.js"
 
 // Get
 const getUsers = async (req, res, next) => {  
