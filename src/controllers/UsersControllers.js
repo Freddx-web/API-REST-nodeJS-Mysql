@@ -27,15 +27,19 @@ const getUserId = async (req, res, next) => {
     const { id } = req.params;
     const connection = await getConnection();
     const result = await connection.query("SELECT * FROM usuarios WHERE id = ?", id);
-    res.json(result);
+    if (result.length > 0) {
+      res.json(result);
+    } else { 
+      res.status(404).send("No se encontro ningun resultado."); 
+    }
   } catch (error) {
-    res.status(500);
+    res.status(500).send("Falls in Server.");;
     res.send(error.message);
   }
 };
 
 // Post 
-const addUsers = async (req, res) => {
+const addUsers = async (req, res, next) => {
   try {
     const { nombre, email, password } = req.body;
     if (nombre === undefined || email === undefined || password === undefined) {
@@ -66,7 +70,11 @@ const updateUser = async (req, res, next) => {
       const usuarios = { nombre, email, password };
       const connection = await getConnection();
       const result = await connection.query("UPDATE usuarios SET ? WHERE id = ?", [usuarios, id]);
-      res.json(result);
+      if (result.length > 0) {
+        res.json(result);
+      } else { 
+        res.status(404).send("Estos datos no existe"); 
+      }
     }
   } catch (error) {
     res.status(500);
@@ -76,15 +84,19 @@ const updateUser = async (req, res, next) => {
 
 // DELETE
 const  deleteUser = async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        const connection = await getConnection();
-        const result = await connection.query("DELETE FROM usuarios WHERE id = ?", id);
-        res.json(result);
-    } catch (error) {
-        res.status(500);
-        res.send(error.message);
+  try {
+    const { id } = req.params;
+    const connection = await getConnection();
+    const result = await connection.query("DELETE FROM usuarios WHERE id = ?", id);
+    if (result.length > 0) {
+      res.json(result);
+    } else { 
+      res.status(404).send("Estos dato ha sido Eliminado."); 
     }
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+  }
 };
 
 // Export
