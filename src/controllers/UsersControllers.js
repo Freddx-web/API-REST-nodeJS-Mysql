@@ -30,10 +30,10 @@ const getUserId = async (req, res, next) => {
     if (result.length > 0) {
       res.json(result);
     } else { 
-      res.status(404).send("No se encontro ningun resultado."); 
+      res.status(404).json({ message: "Opss.. Usuarios No Encotrado" }); 
     }
   } catch (error) {
-    res.status(500).send("Falls in Server.");;
+    res.status(500).send("Falls in Server.");
     res.send(error.message);
   }
 };
@@ -63,21 +63,47 @@ const updateUser = async (req, res, next) => {
     const { id } = req.params;
     const { nombre, email, password } = req.body;
 
-    if (id === undefined || nombre === undefined || email === undefined || password === undefined) {
-      res.status(400).json({ message: "Bad Request. Please fill all field." });
-    }
-    else {
-      const usuarios = { nombre, email, password };
-      const connection = await getConnection();
-      const result = await connection.query("UPDATE usuarios SET ? WHERE id = ?", [usuarios, id]);
-      if (result.length > 0) {
-        res.json(result);
-      } else { 
-        res.status(404).send("Estos datos no existe"); 
+    const connection = await getConnection();
+    const result = await connection.query("SELECT * FROM usuarios WHERE id = ?", id);
+    if (result.length > 0) {
+
+      
+
+      if (id === undefined || nombre === undefined || email === undefined || password === undefined) {
+        res.status(400).json({ message: "Bad Request. Please fill all field." });
       }
+      else {
+        const usuarios = { nombre, email, password };
+        const connection = await getConnection();
+        const result = await connection.query("UPDATE usuarios SET ? WHERE id = ?", [usuarios, id]);
+        /**
+         * Arreglo de Result: Consultar Si existe los datos resibidos 
+         * para luego Editarlos y subirlo a la base de datos
+         */
+        // res.json(result);
+        res.json({ message: "Los Datos a Sido Actualizados"})
+      }
+    
+
+
+
+
+
+
+    } else { 
+
+
+      res.status(404).json({ message: "Opss.. Usuarios No Encotrado" }); 
+
+
+
+
+
+
     }
+
   } catch (error) {
-    res.status(500);
+    res.status(500).send("Falls in Server.");
     res.send(error.message);
   }
 };
@@ -91,7 +117,7 @@ const  deleteUser = async (req, res, next) => {
     if (result.length > 0) {
       res.json(result);
     } else { 
-      res.status(404).send("Estos dato ha sido Eliminado."); 
+      res.status(404).json({ message: "Los datos A sido Eliminados" }); 
     }
   } catch (error) {
     res.status(500);

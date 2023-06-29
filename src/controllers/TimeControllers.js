@@ -39,7 +39,7 @@ const hors_mins_secs = (hours + ":" + minutes + ":" + seconds)
 const date_time = (year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds);
 
 // prints date in YYYY-MM-DD format
-console.log('date connect ' +date_time);
+console.log('date connect ' + date_time);
 
 // Exportacion Global
 module.exports = {

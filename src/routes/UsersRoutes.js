@@ -24,7 +24,7 @@ router.post("/", getUsersController.addUsers);
 //http://localhost:4000/api/app/1   (DELETE)
 router.delete("/:id", getUsersController.deleteUser);
 
-////http://localhost:4000/api/app/1 (UPDATE)
+//http://localhost:4000/api/app/1 (UPDATE)
 router.put("/:id", getUsersController.updateUser);
 
 export default router;
