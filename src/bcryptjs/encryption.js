@@ -1,60 +1,26 @@
 
+// Importamos paquete
+const bcrypt = require("bcryptjs");
 
 
-// Parametros para la encriptacion
+// Primero vamos a hashear la contraseña
+const palabraSecretaTextoPlano = "danny123";
+// Entre más rondas, mejor protección, pero más consumo de recursos. 10 está bien
+const rondasDeSal = 10;
 
-// crypto module
-const crypto = require("crypto");
-
-const algorithm = "aes-256-cbc"; 
-
-// generate 16 bytes of random data
-const initVector = crypto.randomBytes(16);
-
-// secret key generate 32 bytes of random data
-const Securitykey = crypto.randomBytes(32);
-
-// the cipher function
-const cipher = crypto.createCipheriv(algorithm, Securitykey, initVector);
-
-
-// protected data
-//const encriptado = "This is a secret encriptado";
-
-
-
-/*
-
-// encrypt the encriptado
-// input encoding
-// output encoding
-let encryptedData = cipher.update(encriptado, "utf-8", "hex");
-
-encryptedData += cipher.final("hex");
-
-console.log("Encrypted encriptado: " + encryptedData);
+bcrypt.hash(palabraSecretaTextoPlano, rondasDeSal, (err, encriptacion) => {
+	if (err) {
+		console.log("Error hasheando:", err);
+	} else {
+        bcrypt.compare(palabraSecretaTextoPlano, encriptacion, (err, coinciden) => {
+	        if (err) {
+		        console.log("Error comprobando:", err);
+	        } else {
+		        console.log("\nVALIDACION EXITOSO - HASH: " + coinciden);
+	        }
+        });
+		console.log("\nsecret:" + palabraSecretaTextoPlano + "\nhash:" + encriptacion);
+	}
+});
 
 
-
-*/
-
-
-
-
-
-
-
-
-
-/*
-// the decipher function
-const decipher = crypto.createDecipheriv(algorithm, Securitykey, initVector);
-
-let decryptedData = decipher.update(encryptedData, "hex", "utf-8");
-
-decryptedData += decipher.final("utf8");
-
-console.log("Decrypted encriptado: " + decryptedData);
-
-
-*/

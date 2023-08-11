@@ -41,15 +41,32 @@ const getUserId = async (req, res, next) => {
 // Post 
 const addUsers = async (req, res, next) => {
   try {
-    const { nombre, email, password } = req.body;
-    if (nombre === undefined || email === undefined || password === undefined) {
+    const { name, email, password } = req.body;
+    if (name === undefined || email === undefined || password === undefined) {
       res.status(400).json({ message: "Bad Request. Please fill all field." });
     } 
-    else {
-      const usuarios = { nombre, email, password, date_time };
+    else { 
+      // Query Exist New User in DATABASE
       const connection = await getConnection();
-      await connection.query("INSERT INTO usuarios SET ?", usuarios);
-      res.json({ message: "usuarios added" });
+      const result_Email = await connection.query("SELECT * FROM usuarios WHERE email = ? ", email);
+      const result_Name = await connection.query("SELECT * FROM usuarios WHERE name = ? ", name);
+      if (result_Email.length > 0) {
+        
+        res.status(404).json({ message: "Este Email a sido registrado, Intete con otro Email" }); 
+      } else if (result_Name.length > 0) {
+        res.status(404).json({ message: "Este Nombre a sido registrado, Intete con otro Nombre" }); 
+      }
+      else { 
+        
+        // Insert New User
+        const usuarios = { name, email, password, date_time };
+        const connection = await getConnection();
+        await connection.query("INSERT INTO usuarios SET ?", usuarios);
+
+        res.status(200).json({ message:"Insert New User"});
+        
+      }
+
     }
   } catch (error) {
     res.status(500);
@@ -61,19 +78,17 @@ const addUsers = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { nombre, email, password } = req.body;
+    const { name, email, password } = req.body;
 
     const connection = await getConnection();
     const result = await connection.query("SELECT * FROM usuarios WHERE id = ?", id);
     if (result.length > 0) {
 
-      
-
-      if (id === undefined || nombre === undefined || email === undefined || password === undefined) {
+      if (id === undefined || name === undefined || email === undefined || password === undefined) {
         res.status(400).json({ message: "Bad Request. Please fill all field." });
       }
       else {
-        const usuarios = { nombre, email, password };
+        const usuarios = { name, email, password };
         const connection = await getConnection();
         const result = await connection.query("UPDATE usuarios SET ? WHERE id = ?", [usuarios, id]);
         /**
@@ -83,22 +98,11 @@ const updateUser = async (req, res, next) => {
         // res.json(result);
         res.json({ message: "Los Datos a Sido Actualizados"})
       }
-    
-
-
-
-
-
+  
 
     } else { 
 
-
       res.status(404).json({ message: "Opss.. Usuarios No Encotrado" }); 
-
-
-
-
-
 
     }
 
