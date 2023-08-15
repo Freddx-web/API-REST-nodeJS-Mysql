@@ -28,7 +28,7 @@
   <a href="https://github.com/othneildrew/Best-README-Template">
     <img width="144" height="144" src="https://img.icons8.com/nolan/144/express-js.png" alt="express-js"/>
   </a>
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/othneildrew/Best-README-Template" align="center">
     <img src="https://img.icons8.com/fluency/144/000000/javascript.png"/>
     JS
   </a>
