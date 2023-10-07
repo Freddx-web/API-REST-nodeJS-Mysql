@@ -18,7 +18,7 @@
 <br />
 <div align="center">
   <a href="#">
-    <img src="https://img.icons8.com/color/144/000000/mysql.png"/>
+    <img width="144" height="144" src="images/34654756765756.png" alt="mysql"/>
   </a>
   <a href="#">
     <img src="https://img.icons8.com/fluency/144/000000/node-js.png"/>
