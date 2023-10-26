@@ -30,8 +30,6 @@
     <img src="https://img.icons8.com/fluency/144/000000/javascript.png"/>
   </a>
   
-  
-
 
 
   <h3 align="center">Api Node React</h3>
